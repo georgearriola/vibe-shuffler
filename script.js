@@ -11,30 +11,30 @@ const apiSound = document.getElementById('apiSound');
 const clearSound = document.getElementById('clearSound');
 const bgMusic = document.getElementById('bgMusic');
 
-// CHROME FOR MAC AUDIO FIX
+// START EXPERIENCE & UNLOCK AUDIO
 startBtn.addEventListener('click', () => {
-    // 1. Resume Audio Context
+    // Resume audio context for Chrome/Mac
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (AudioContext) {
         const ctx = new AudioContext();
         ctx.resume();
     }
 
-    // 2. Play Background Music
+    // Play Background Music
     bgMusic.volume = 0.15;
     bgMusic.play();
 
-    // 3. Hide Overlay
+    // Fade out overlay
     overlay.style.opacity = '0';
-    setTimeout(() => overlay.style.display = 'none', 500);
+    overlay.style.visibility = 'hidden';
 });
 
-// API BUTTON
+// API LOGIC
 apiBtn.addEventListener('click', async () => {
     apiSound.currentTime = 0;
     apiSound.play().catch(() => {});
     
-    apiBtn.textContent = "Connecting...";
+    apiBtn.textContent = "Fetching...";
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
         const data = await res.json();
@@ -46,7 +46,7 @@ apiBtn.addEventListener('click', async () => {
     }
 });
 
-// SHUFFLE BUTTON
+// SHUFFLE LOGIC
 shuffleBtn.addEventListener('click', () => {
     let names = nameInput.value.split('\n').map(n => n.trim()).filter(n => n !== "");
     if (names.length === 0) return;
@@ -54,6 +54,7 @@ shuffleBtn.addEventListener('click', () => {
     shuffleSound.currentTime = 0;
     shuffleSound.play().catch(() => {});
 
+    // Fisher-Yates
     for (let i = names.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [names[i], names[j]] = [names[j], names[i]];
@@ -69,7 +70,7 @@ shuffleBtn.addEventListener('click', () => {
     });
 });
 
-// CLEAR BUTTON
+// CLEAR LOGIC
 clearBtn.addEventListener('click', () => {
     clearSound.currentTime = 0;
     clearSound.play().catch(() => {});
