@@ -10,24 +10,26 @@ const shuffleSound = document.getElementById('shuffleSound');
 const apiSound = document.getElementById('apiSound');
 const clearSound = document.getElementById('clearSound');
 const bgMusic = document.getElementById('bgMusic');
+const video = document.getElementById('bgVideo');
 
 startBtn.addEventListener('click', () => {
+    // Chrome needs this interaction to play media
     bgMusic.volume = 0.2;
     bgMusic.play();
+    video.play(); // Explicitly play the video here
+
     overlay.style.opacity = '0';
     setTimeout(() => overlay.style.display = 'none', 500);
 });
 
 apiBtn.addEventListener('click', async () => {
     apiSound.play();
-    apiBtn.textContent = "Loading...";
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
         const data = await res.json();
         const names = data.results.map(u => `${u.name.first} ${u.name.last}`);
         nameInput.value += (nameInput.value ? "\n" : "") + names.join("\n");
-        apiBtn.textContent = "Load Random Users (API)";
-    } catch (e) { apiBtn.textContent = "Error"; }
+    } catch (e) { console.log(e); }
 });
 
 shuffleBtn.addEventListener('click', () => {
