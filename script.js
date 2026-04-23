@@ -1,77 +1,70 @@
-// 1. Declare variables at the very top (Global Scope)
-let bgMusic = null;
-let shuffleSound = null;
-let apiSound = null;
-let clearSound = null;
+// 1. Declare variables
+let bgMusic, shuffleSound, apiSound, clearSound;
 
 const startBtn = document.getElementById('startBtn');
 const overlay = document.getElementById('overlay');
 const video = document.getElementById('bgVideo');
 
-// 2. The "Activation" Function
+// 2. The Activation
 startBtn.addEventListener('click', function() {
-    console.log("Activating Media...");
+    // Force browser to allow audio
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) { new AudioContext().resume(); }
 
-    // Create the Audio objects ONLY after click
-    // Using super-compatible MP3 links
-    bgMusic = new Audio('https://www.soundjay.com/nature/sounds/rain-03.mp3');
-    shuffleSound = new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
-    apiSound = new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3');
-    clearSound = new Audio('https://www.soundjay.com/buttons/sounds/button-10.mp3');
-
-    // IMPORTANT: Check if bgMusic exists before setting volume
-    if (bgMusic) {
+    try {
+        // Use standard W3Schools assets - extremely high compatibility
+        bgMusic = new Audio('https://www.w3schools.com/tags/horse.mp3'); 
         bgMusic.loop = true;
-        bgMusic.volume = 0.15; // This won't be null anymore!
-        bgMusic.play().catch(e => console.log("Audio play blocked:", e));
+        bgMusic.volume = 0.1;
+        bgMusic.play().catch(e => console.log("Audio play blocked"));
+    } catch (err) {
+        console.log("Audio setup failed, but app will continue.");
     }
 
-    if (video) {
-        video.play().catch(e => console.log("Video play blocked:", e));
-    }
+    if (video) { video.play().catch(() => {}); }
 
-    // Hide the overlay
     overlay.style.opacity = '0';
-    setTimeout(() => {
-        overlay.style.display = 'none';
-    }, 500);
+    setTimeout(() => { overlay.style.display = 'none'; }, 500);
 });
 
 // 3. API Button
 document.getElementById('apiBtn').addEventListener('click', async () => {
-    if (apiSound) apiSound.play().catch(() => {});
+    try { apiSound.play().catch(() => {}); } catch(e) {}
     
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
         const data = await res.json();
         const names = data.results.map(u => `${u.name.first} ${u.name.last}`).join('\n');
         document.getElementById('nameInput').value += names + '\n';
-    } catch (e) {
-        console.log("API Error:", e);
-    }
+    } catch (e) { console.log("API Error", e); }
 });
 
 // 4. Shuffle Button
 document.getElementById('shuffleBtn').addEventListener('click', () => {
-    if (shuffleSound) {
-        shuffleSound.currentTime = 0;
-        shuffleSound.play().catch(() => {});
-    }
+    try { shuffleSound.play().catch(() => {}); } catch(e) {}
     
     const input = document.getElementById('nameInput');
+    const list = document.getElementById('nameList');
     let names = input.value.split('\n').filter(n => n.trim() !== "");
+    
     if (names.length === 0) return;
     
     names.sort(() => Math.random() - 0.5);
-    document.getElementById('nameList').innerHTML = names.map(n => `<li>${n}</li>`).join('');
+    
+    // Clear list and re-add with a delay for the animation
+    list.innerHTML = "";
+    names.forEach((name, index) => {
+        setTimeout(() => {
+            const li = document.createElement('li');
+            li.textContent = name;
+            list.appendChild(li);
+        }, index * 100);
+    });
 });
 
 // 5. Clear Button
 document.getElementById('clearBtn').addEventListener('click', () => {
-    if (clearSound) {
-        clearSound.currentTime = 0;
-        clearSound.play().catch(() => {});
-    }
+    try { clearSound.play().catch(() => {}); } catch(e) {}
     document.getElementById('nameInput').value = "";
     document.getElementById('nameList').innerHTML = "";
 });
