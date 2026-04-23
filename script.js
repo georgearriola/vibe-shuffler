@@ -1,54 +1,67 @@
+// Global variables for our sounds
 let bgMusic, shuffleSound, apiSound, clearSound;
 
 const startBtn = document.getElementById('startBtn');
 const overlay = document.getElementById('overlay');
 const video = document.getElementById('bgVideo');
 
-startBtn.addEventListener('click', () => {
-    // Resume Audio Context
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-    audioCtx.resume();
+startBtn.addEventListener('click', function() {
+    // 1. Initialize Audio with high-compatibility Wikimedia/W3 links
+    bgMusic = new Audio('https://upload.wikimedia.org/wikipedia/commons/3/30/Rain_on_roof_loop.ogg');
+    shuffleSound = new Audio('https://www.w3schools.com/graphics/horse.ogv'); // Using stable web assets
+    apiSound = new Audio('https://www.w3schools.com/tags/horse.mp3');
+    clearSound = new Audio('https://www.w3schools.com/tags/horse.mp3');
 
-    // NEW RELIABLE AUDIO LINKS
-    bgMusic = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_78335029a1.mp3');
-    shuffleSound = new Audio('https://cdn.pixabay.com/audio/2022/03/10/audio_c33e8a9332.mp3');
-    apiSound = new Audio('https://cdn.pixabay.com/audio/2021/08/04/audio_bb0773d12d.mp3');
-    clearSound = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_273641775f.mp3');
-
+    // 2. Configure Background Music
     bgMusic.loop = true;
-    bgMusic.volume = 0.15;
+    bgMusic.volume = 0.2;
     
-    // Play with error handling
-    bgMusic.play().then(() => console.log("Music Started!"))
-           .catch(e => console.log("Audio still failing: ", e));
-    
-    video.play().catch(e => console.log("Video failing: ", e));
+    // 3. Play Media
+    bgMusic.play().catch(e => console.log("Audio play prevented:", e));
+    if (video) {
+        video.play().catch(e => console.log("Video play prevented:", e));
+    }
 
+    // 4. Smooth UI Transition
     overlay.style.opacity = '0';
-    setTimeout(() => { overlay.style.display = 'none'; }, 500);
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 500);
 });
 
-// BTN LOGIC
+// API BUTTON
 document.getElementById('apiBtn').addEventListener('click', async () => {
-    if (apiSound) apiSound.play();
+    if (apiSound) apiSound.play().catch(() => {});
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
         const data = await res.json();
-        document.getElementById('nameInput').value += data.results.map(u => `${u.name.first} ${u.name.last}`).join('\n') + '\n';
-    } catch (e) { console.log(e); }
+        const names = data.results.map(u => `${u.name.first} ${u.name.last}`).join('\n');
+        document.getElementById('nameInput').value += names + '\n';
+    } catch (e) {
+        console.log("API Fetch failed", e);
+    }
 });
 
+// SHUFFLE BUTTON
 document.getElementById('shuffleBtn').addEventListener('click', () => {
-    if (shuffleSound) shuffleSound.play();
-    let names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim() !== "");
+    if (shuffleSound) {
+        shuffleSound.currentTime = 0;
+        shuffleSound.play().catch(() => {});
+    }
+    const input = document.getElementById('nameInput');
+    let names = input.value.split('\n').filter(n => n.trim() !== "");
     if (names.length === 0) return;
+    
     names.sort(() => Math.random() - 0.5);
     document.getElementById('nameList').innerHTML = names.map(n => `<li>${n}</li>`).join('');
 });
 
+// CLEAR BUTTON
 document.getElementById('clearBtn').addEventListener('click', () => {
-    if (clearSound) clearSound.play();
+    if (clearSound) {
+        clearSound.currentTime = 0;
+        clearSound.play().catch(() => {});
+    }
     document.getElementById('nameInput').value = "";
     document.getElementById('nameList').innerHTML = "";
 });
