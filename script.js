@@ -11,29 +11,22 @@ const apiSound = document.getElementById('apiSound');
 const clearSound = document.getElementById('clearSound');
 const bgMusic = document.getElementById('bgMusic');
 
-// START EXPERIENCE & UNLOCK AUDIO
+// Audio Activation for Chrome/Safari
 startBtn.addEventListener('click', () => {
-    // Resume audio context for Chrome/Mac
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) {
-        const ctx = new AudioContext();
-        ctx.resume();
-    }
+    if (AudioContext) { new AudioContext().resume(); }
 
-    // Play Background Music
     bgMusic.volume = 0.15;
     bgMusic.play();
 
-    // Fade out overlay
     overlay.style.opacity = '0';
-    overlay.style.visibility = 'hidden';
+    setTimeout(() => overlay.style.display = 'none', 500);
 });
 
-// API LOGIC
+// API Fetch
 apiBtn.addEventListener('click', async () => {
     apiSound.currentTime = 0;
     apiSound.play().catch(() => {});
-    
     apiBtn.textContent = "Fetching...";
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
@@ -41,12 +34,10 @@ apiBtn.addEventListener('click', async () => {
         const names = data.results.map(u => `${u.name.first} ${u.name.last}`);
         nameInput.value += (nameInput.value ? "\n" : "") + names.join("\n");
         apiBtn.textContent = "Load Random Users (API)";
-    } catch (err) {
-        apiBtn.textContent = "API Error";
-    }
+    } catch (err) { apiBtn.textContent = "API Error"; }
 });
 
-// SHUFFLE LOGIC
+// Shuffle Logic
 shuffleBtn.addEventListener('click', () => {
     let names = nameInput.value.split('\n').map(n => n.trim()).filter(n => n !== "");
     if (names.length === 0) return;
@@ -54,7 +45,6 @@ shuffleBtn.addEventListener('click', () => {
     shuffleSound.currentTime = 0;
     shuffleSound.play().catch(() => {});
 
-    // Fisher-Yates
     for (let i = names.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [names[i], names[j]] = [names[j], names[i]];
@@ -70,7 +60,7 @@ shuffleBtn.addEventListener('click', () => {
     });
 });
 
-// CLEAR LOGIC
+// Clear Logic
 clearBtn.addEventListener('click', () => {
     clearSound.currentTime = 0;
     clearSound.play().catch(() => {});
