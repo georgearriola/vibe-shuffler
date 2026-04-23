@@ -38,7 +38,7 @@ startBtn.addEventListener('click', function() {
     audioCtx.resume();
 
     // 2. Start the synthetic background sound
-    startZenHum();
+    //startZenHum();
     playBlip(660, 0.2); // Start sound
 
     // 3. Play Video
