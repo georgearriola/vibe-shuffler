@@ -1,5 +1,5 @@
-const overlay = document.getElementById('overlay');
 const startBtn = document.getElementById('startBtn');
+const overlay = document.getElementById('overlay');
 const shuffleBtn = document.getElementById('shuffleBtn');
 const clearBtn = document.getElementById('clearBtn');
 const apiBtn = document.getElementById('apiBtn');
@@ -11,40 +11,30 @@ const apiSound = document.getElementById('apiSound');
 const clearSound = document.getElementById('clearSound');
 const bgMusic = document.getElementById('bgMusic');
 
-// Audio Activation for Chrome/Safari
 startBtn.addEventListener('click', () => {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) { new AudioContext().resume(); }
-
-    bgMusic.volume = 0.15;
+    bgMusic.volume = 0.2;
     bgMusic.play();
-
     overlay.style.opacity = '0';
     setTimeout(() => overlay.style.display = 'none', 500);
 });
 
-// API Fetch
 apiBtn.addEventListener('click', async () => {
-    apiSound.currentTime = 0;
-    apiSound.play().catch(() => {});
-    apiBtn.textContent = "Fetching...";
+    apiSound.play();
+    apiBtn.textContent = "Loading...";
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
         const data = await res.json();
         const names = data.results.map(u => `${u.name.first} ${u.name.last}`);
         nameInput.value += (nameInput.value ? "\n" : "") + names.join("\n");
         apiBtn.textContent = "Load Random Users (API)";
-    } catch (err) { apiBtn.textContent = "API Error"; }
+    } catch (e) { apiBtn.textContent = "Error"; }
 });
 
-// Shuffle Logic
 shuffleBtn.addEventListener('click', () => {
     let names = nameInput.value.split('\n').map(n => n.trim()).filter(n => n !== "");
     if (names.length === 0) return;
-
-    shuffleSound.currentTime = 0;
-    shuffleSound.play().catch(() => {});
-
+    shuffleSound.play();
+    
     for (let i = names.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [names[i], names[j]] = [names[j], names[i]];
@@ -60,10 +50,8 @@ shuffleBtn.addEventListener('click', () => {
     });
 });
 
-// Clear Logic
 clearBtn.addEventListener('click', () => {
-    clearSound.currentTime = 0;
-    clearSound.play().catch(() => {});
+    clearSound.play();
     nameInput.value = "";
     nameList.innerHTML = "";
 });
