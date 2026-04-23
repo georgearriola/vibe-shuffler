@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="overlay">
+        <div class="overlay-content">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <h2>Vibe Shuffler</h2>
+            <button id="startBtn">Enter Experience</button>
+        </div>
+    </div>
+
     <video autoplay muted loop playsinline id="bgVideo">
         <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
     </video>
@@ -27,11 +37,11 @@
 
         <ul id="nameList"></ul>
 
-        <audio id="shuffleSound" src="https://actions.google.com/sounds/v1/foley/paper_shuffle.ogg" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="apiSound" src="https://actions.google.com/sounds/v1/ui/click_on.ogg" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="clearSound" src="https://actions.google.com/sounds/v1/ui/uiclick.ogg" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="shuffleSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="apiSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="clearSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3" preload="auto" crossorigin="anonymous"></audio>
         <audio id="bgMusic" loop crossorigin="anonymous">
-            <source src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg" type="audio/ogg">
+            <source src="https://assets.mixkit.co/active_storage/sfx/123/123-preview.mp3" type="audio/mpeg">
         </audio>
     </div>
 
