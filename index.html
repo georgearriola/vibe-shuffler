@@ -17,10 +17,8 @@
         </svg>
 
         <h1>Vibe Shuffler</h1>
-        
         <button id="apiBtn" class="secondary-btn">Load Random Users (API)</button>
-
-        <textarea id="nameInput" placeholder="Enter names (one per line)..."></textarea>
+        <textarea id="nameInput" placeholder="Enter names..."></textarea>
         
         <div class="button-group">
             <button id="shuffleBtn">SHUFFLE</button>
@@ -29,11 +27,11 @@
 
         <ul id="nameList"></ul>
 
-        <audio id="shuffleSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
-        <audio id="apiSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
-        <audio id="clearSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3" preload="auto"></audio>
-        <audio id="bgMusic" loop>
-            <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
+        <audio id="shuffleSound" src="https://actions.google.com/sounds/v1/foley/paper_shuffle.ogg" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="apiSound" src="https://actions.google.com/sounds/v1/ui/click_on.ogg" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="clearSound" src="https://actions.google.com/sounds/v1/ui/uiclick.ogg" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="bgMusic" loop crossorigin="anonymous">
+            <source src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg" type="audio/ogg">
         </audio>
     </div>
 
