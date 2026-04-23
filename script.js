@@ -1,4 +1,3 @@
-// Define variables but don't load sound yet
 let bgMusic, shuffleSound, apiSound, clearSound;
 
 const startBtn = document.getElementById('startBtn');
@@ -6,26 +5,31 @@ const overlay = document.getElementById('overlay');
 const video = document.getElementById('bgVideo');
 
 startBtn.addEventListener('click', () => {
-    // 1. INITIALIZE AUDIO OBJECTS ON CLICK (Chrome High-Trust Method)
-    bgMusic = new Audio('https://www.soundjay.com/nature/sounds/rain-03.mp3');
-    shuffleSound = new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
-    apiSound = new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3');
-    clearSound = new Audio('https://www.soundjay.com/buttons/sounds/button-10.mp3');
+    // Resume Audio Context
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    audioCtx.resume();
 
-    // 2. Setup Loop & Play
+    // NEW RELIABLE AUDIO LINKS
+    bgMusic = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_78335029a1.mp3');
+    shuffleSound = new Audio('https://cdn.pixabay.com/audio/2022/03/10/audio_c33e8a9332.mp3');
+    apiSound = new Audio('https://cdn.pixabay.com/audio/2021/08/04/audio_bb0773d12d.mp3');
+    clearSound = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_273641775f.mp3');
+
     bgMusic.loop = true;
-    bgMusic.volume = 0.2;
-    bgMusic.play().catch(e => console.log("Still blocked by Chrome settings"));
+    bgMusic.volume = 0.15;
     
-    // 3. Force Video
-    video.play();
+    // Play with error handling
+    bgMusic.play().then(() => console.log("Music Started!"))
+           .catch(e => console.log("Audio still failing: ", e));
+    
+    video.play().catch(e => console.log("Video failing: ", e));
 
-    // 4. Hide Overlay
     overlay.style.opacity = '0';
     setTimeout(() => { overlay.style.display = 'none'; }, 500);
 });
 
-// API BUTTON
+// BTN LOGIC
 document.getElementById('apiBtn').addEventListener('click', async () => {
     if (apiSound) apiSound.play();
     try {
@@ -35,7 +39,6 @@ document.getElementById('apiBtn').addEventListener('click', async () => {
     } catch (e) { console.log(e); }
 });
 
-// SHUFFLE BUTTON
 document.getElementById('shuffleBtn').addEventListener('click', () => {
     if (shuffleSound) shuffleSound.play();
     let names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim() !== "");
@@ -44,7 +47,6 @@ document.getElementById('shuffleBtn').addEventListener('click', () => {
     document.getElementById('nameList').innerHTML = names.map(n => `<li>${n}</li>`).join('');
 });
 
-// CLEAR BUTTON
 document.getElementById('clearBtn').addEventListener('click', () => {
     if (clearSound) clearSound.play();
     document.getElementById('nameInput').value = "";
