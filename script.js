@@ -1,48 +1,43 @@
+// Define variables but don't load sound yet
+let bgMusic, shuffleSound, apiSound, clearSound;
+
 const startBtn = document.getElementById('startBtn');
 const overlay = document.getElementById('overlay');
-const bgVideo = document.getElementById('bgVideo');
-const bgMusic = document.getElementById('bgMusic');
-
-const shuffleSound = document.getElementById('shuffleSound');
-const apiSound = document.getElementById('apiSound');
-const clearSound = document.getElementById('clearSound');
+const video = document.getElementById('bgVideo');
 
 startBtn.addEventListener('click', () => {
-    // 1. Chrome Audio Context Resume
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) {
-        const audioCtx = new AudioContext();
-        audioCtx.resume();
-    }
+    // 1. INITIALIZE AUDIO OBJECTS ON CLICK (Chrome High-Trust Method)
+    bgMusic = new Audio('https://www.soundjay.com/nature/sounds/rain-03.mp3');
+    shuffleSound = new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
+    apiSound = new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3');
+    clearSound = new Audio('https://www.soundjay.com/buttons/sounds/button-10.mp3');
 
-    // 2. Play Background Music
+    // 2. Setup Loop & Play
+    bgMusic.loop = true;
     bgMusic.volume = 0.2;
-    bgMusic.play().then(() => console.log("SUCCESS: Music playing"))
-           .catch(e => console.log("ERROR: Music blocked", e));
+    bgMusic.play().catch(e => console.log("Still blocked by Chrome settings"));
+    
+    // 3. Force Video
+    video.play();
 
-    // 3. Play Video
-    bgVideo.play().then(() => console.log("SUCCESS: Video playing"))
-          .catch(e => console.log("ERROR: Video blocked", e));
-
-    // 4. Close Overlay
+    // 4. Hide Overlay
     overlay.style.opacity = '0';
-    setTimeout(() => { overlay.style.display = 'none'; }, 600);
+    setTimeout(() => { overlay.style.display = 'none'; }, 500);
 });
 
 // API BUTTON
 document.getElementById('apiBtn').addEventListener('click', async () => {
-    apiSound.play().catch(() => {});
+    if (apiSound) apiSound.play();
     try {
         const res = await fetch('https://randomuser.me/api/?results=5');
         const data = await res.json();
-        const names = data.results.map(u => `${u.name.first} ${u.name.last}`).join('\n');
-        document.getElementById('nameInput').value += names + '\n';
-    } catch (e) { console.log("API Fail", e); }
+        document.getElementById('nameInput').value += data.results.map(u => `${u.name.first} ${u.name.last}`).join('\n') + '\n';
+    } catch (e) { console.log(e); }
 });
 
 // SHUFFLE BUTTON
 document.getElementById('shuffleBtn').addEventListener('click', () => {
-    shuffleSound.play().catch(() => {});
+    if (shuffleSound) shuffleSound.play();
     let names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim() !== "");
     if (names.length === 0) return;
     names.sort(() => Math.random() - 0.5);
@@ -51,7 +46,7 @@ document.getElementById('shuffleBtn').addEventListener('click', () => {
 
 // CLEAR BUTTON
 document.getElementById('clearBtn').addEventListener('click', () => {
-    clearSound.play().catch(() => {});
+    if (clearSound) clearSound.play();
     document.getElementById('nameInput').value = "";
     document.getElementById('nameList').innerHTML = "";
 });
