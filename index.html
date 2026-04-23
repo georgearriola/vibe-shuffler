@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Shuffler Elite 140</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <video autoplay muted loop playsinline id="bgVideo">
+        <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+    </video>
+
+    <div class="container">
+        <svg class="main-icon" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#00dbde" stroke-width="2">
+            <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+        </svg>
+
+        <h1>Vibe Shuffler</h1>
+        
+        <button id="apiBtn" class="secondary-btn">Load Random Users (API)</button>
+
+        <textarea id="nameInput" placeholder="Enter names (one per line)..."></textarea>
+        
+        <div class="button-group">
+            <button id="shuffleBtn">SHUFFLE</button>
+            <button id="clearBtn">CLEAR</button>
+        </div>
+
+        <ul id="nameList"></ul>
+
+        <audio id="shuffleSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
+        <audio id="apiSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3" preload="auto"></audio>
+        <audio id="clearSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3" preload="auto"></audio>
+        <audio id="bgMusic" loop>
+            <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
