@@ -14,14 +14,32 @@ body, html {
     filter: brightness(0.5);
 }
 
+/* FIX FOR START PAGE ALIGNMENT */
 #overlay {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
     background: #000; z-index: 100;
-    display: flex; justify-content: center; align-items: center;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
     transition: opacity 0.8s ease;
 }
 
+.overlay-content {
+    display: flex;
+    flex-direction: column; /* Stacks text on top of button */
+    align-items: center;    /* Centers them horizontally */
+    gap: 20px;              /* Space between text and button */
+}
+
+#startBtn {
+    width: 220px; /* Larger button for the splash screen */
+    height: 50px;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+/* MAIN APP CONTAINER */
 .container {
     position: relative; z-index: 10;
     background: rgba(255, 255, 255, 0.1);
@@ -31,10 +49,10 @@ body, html {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-h1 { color: white; margin-bottom: 20px; font-weight: 300; letter-spacing: 1px; }
+h1 { color: white; margin: 0; font-weight: 300; letter-spacing: 1px; }
 
 textarea {
-    width: 100%; height: 100px; margin-bottom: 15px;
+    width: 100%; height: 100px; margin: 15px 0;
     background: rgba(0,0,0,0.3); color: white;
     border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.1);
     box-sizing: border-box; resize: none; outline: none;
@@ -48,7 +66,7 @@ button {
     background: linear-gradient(45deg, #00dbde, #fc00ff);
     border: none; color: white; font-weight: bold;
     cursor: pointer; transition: all 0.3s ease;
-    height: 42px; width: 125px; /* Fixed identical sizes */
+    height: 42px; width: 125px;
     border-radius: 12px; font-size: 13px;
     display: flex; align-items: center; justify-content: center;
 }
